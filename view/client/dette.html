@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion des Clients</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-gradient-to-br from-indigo-200 to-blue-300 min-h-screen py-6">
+
+    <div class="max-w-7xl mx-auto bg-white shadow-lg rounded-xl p-8">
+
+        <!-- Cadre des informations du client -->
+        <div id="client-info" class="bg-gradient-to-r from-blue-500 to-indigo-600 p-6 rounded-lg shadow-xl mb-8">
+            <!-- Les informations du client seront affichées ici -->
+        </div>
+
+        <!-- Liste des Clients -->
+        <div class="flex justify-between items-center mb-8">
+            <h1 class="text-5xl font-extrabold text-gray-800">Liste des Dettes du client</h1>
+            
+        </div>
+
+        <div class="mb-6">
+            <form id="filter-form" class="flex items-center bg-gray-100 p-4 rounded-lg shadow-inner space-x-4">
+                <div class="flex-grow">
+                    <select id="status"
+                        class="border border-gray-300 rounded-lg pl-12 pr-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full">
+                        <option value="">Tous</option>
+                        <option value="PAYEE">PAYEE</option>
+                        <option value="IMPAYEE">IMPAYEE</option>
+                    </select>
+                </div>
+
+                <button type="submit"
+                    class="px-6 py-3 bg-blue-600 text-white rounded-lg shadow-lg hover:bg-blue-700 transition-colors">
+                    <i class="fas fa-search mr-2"></i> Rechercher
+                </button>
+            </form>
+        </div>
+
+        <div class="overflow-x-auto rounded-lg shadow-lg">
+            <table class="min-w-full table-auto bg-white rounded-lg">
+                <thead class="bg-gradient-to-r from-blue-600 to-blue-800 text-white uppercase">
+                    <tr>
+                        <th class="px-6 py-3 text-center text-sm font-semibold">Date</th>
+                        <th class="px-6 py-3 text-center text-sm font-semibold">Montant</th>
+                        <th class="px-6 py-3 text-center text-sm font-semibold">Montant Versé</th>
+                        <th class="px-6 py-3 text-center text-sm font-semibold">Montant Dû</th>
+                        <th class="px-6 py-3 text-center text-sm font-semibold">Statut</th>
+                        <th class="px-6 py-3 text-center text-sm font-semibold">Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="dette-list">
+                    <!-- Les données des dettes seront injectées ici -->
+                     <!-- Aucun détail pour le moment -->
+                </tbody>
+            </table>
+
+        </div>
+
+        <!-- Modal de confirmation de suppression -->
+        <div id="deleteModal" class="fixed inset-0 z-50 flex items-center justify-center hidden">
+            <div class="fixed inset-0 bg-gray-800 bg-opacity-75"></div>
+            <div class="bg-white rounded-lg overflow-hidden shadow-xl transform transition-all max-w-lg w-full">
+                <div class="px-6 py-4">
+                    <h3 class="text-lg font-bold">Supprimer le client</h3>
+                    <p class="text-gray-600 mt-2">Êtes-vous sûr de vouloir supprimer ce client ? Cette action est
+                        irréversible.</p>
+                </div>
+                <div class="px-6 py-4 bg-gray-50 flex justify-end space-x-3">
+                    <button
+                        class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition">Supprimer</button>
+                    <button class="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-400 transition"
+                        onclick="toggleDeleteModal()">Annuler</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <script src="/JS/client/dette.js"></script>
+
+    <script>
+        function toggleDeleteModal() {
+            const modal = document.getElementById('deleteModal');
+            modal.classList.toggle('hidden');
+        }
+    </script>
+
+</body>
+
+</html>

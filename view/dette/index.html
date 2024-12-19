@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Gestion des Clients</title>
+
+    <!-- Utilisation du CDN de Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- FontAwesome et BoxIcons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css" rel="stylesheet">
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body class="bg-gradient-to-br from-indigo-200 to-blue-400 min-h-screen py-10 px-6">
+
+    <!-- Container principal -->
+    <div class="max-w-7xl mx-auto bg-white shadow-lg rounded-xl p-12 space-y-12">
+
+        <!-- Titre et bouton Ajouter une dette -->
+        <div class="flex justify-between items-center mb-10">
+            <h1 class="text-5xl font-bold text-gray-800 tracking-tight font-serif">Gestion des Dettes</h1>
+            <a href="/dette/form"
+                class="inline-flex items-center px-8 py-4 bg-gradient-to-r from-green-500 to-green-700 text-white rounded-full shadow-xl hover:scale-105 transform transition-all duration-300">
+                Ajouter une dette
+                <svg class="h-6 w-6 ml-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                </svg>
+            </a>
+        </div>
+
+        <!-- Formulaire de recherche -->
+        <div class="bg-gray-100 p-6 rounded-lg shadow-lg">
+            <form class="flex items-center space-x-6">
+
+                <div class="flex-1">
+                    <div class="relative">
+                        <input type="text" name="telephone" placeholder="Rechercher par téléphone..."
+                            class="border border-gray-300 rounded-lg pl-12 pr-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full transition-all text-lg font-semibold">
+                        <span class="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-600">
+                            <i class="fas fa-phone-alt"></i>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="flex-1">
+                    <div class="relative">
+                        <input type="text" name="surname" placeholder="Rechercher par surname..."
+                            class="border border-gray-300 rounded-lg pl-12 pr-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full transition-all text-lg font-semibold">
+                        <span class="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-600">
+                            <i class="fas fa-user"></i>
+                        </span>
+                    </div>
+                </div>
+
+                <button type="submit"
+                    class="px-8 py-3 bg-blue-600 text-white rounded-full shadow-xl hover:bg-blue-700 transition-all transform duration-300">
+                    <i class="fas fa-search mr-2"></i> Rechercher
+                </button>
+
+            </form>
+        </div>
+
+        <!-- Tableau des dettes -->
+        <div class="overflow-x-auto rounded-lg shadow-xl">
+            <table class="min-w-full table-auto bg-white rounded-lg">
+                <thead class="bg-gradient-to-r from-blue-600 to-blue-800 text-white uppercase">
+                    <tr>
+                        <th class="px-6 py-3 text-center text-sm font-semibold">#</th>
+                        <th class="px-6 py-3 text-center text-sm font-semibold">Montant</th>
+                        <th class="px-6 py-3 text-center text-sm font-semibold">Montant Restant</th>
+                        <th class="px-6 py-3 text-center text-sm font-semibold">Montant Verse</th>
+                        <th class="px-6 py-3 text-center text-sm font-semibold">Status de la dette</th>
+                        <th class="px-6 py-3 text-center text-sm font-semibold">Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="dettes-list" class="text-gray-700">
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pagination -->
+        <div class="flex justify-center mt-8 space-x-3">
+            <button id="prev"
+                class="px-4 py-2 border bg-white text-gray-600 rounded-lg hover:bg-gray-200 transition transform hover:scale-105"
+                onclick="changePage('prev')">
+                <i class="fas fa-chevron-left"></i> Précédent
+            </button>
+            <button id="current"
+                class="px-4 py-2 border bg-blue-500 text-white rounded-lg hover:bg-blue-200 transition transform hover:scale-105">
+                1
+            </button>
+            <button id="next"
+                class="px-4 py-2 border bg-white text-gray-600 rounded-lg hover:bg-gray-200 transition transform hover:scale-105"
+                onclick="changePage('next')">
+                Suivant <i class="fas fa-chevron-right"></i>
+            </button>
+        </div>
+
+        <!-- Modal de confirmation de suppression -->
+        <div id="deleteModal" class="fixed inset-0 z-50 flex items-center justify-center hidden">
+            <div class="fixed inset-0 bg-gray-800 bg-opacity-75"></div>
+            <div class="bg-white rounded-lg overflow-hidden shadow-xl max-w-lg w-full">
+                <div class="px-6 py-4">
+                    <h3 class="text-lg font-bold">Supprimer la dette</h3>
+                    <p class="text-gray-600 mt-2">Êtes-vous sûr de vouloir supprimer la dette ? Cette action est
+                        irréversible.</p>
+                </div>
+                <div class="px-6 py-4 bg-gray-50 flex justify-end space-x-3">
+                    <button
+                        class="bg-red-600 text-white px-6 py-2 rounded-full hover:bg-red-700 transition transform duration-300"
+                        onclick="confirmDelete()">Supprimer</button>
+                    <button
+                        class="bg-gray-300 text-gray-700 px-6 py-2 rounded-full hover:bg-gray-400 transition transform duration-300"
+                        onclick="toggleDeleteModal()">Annuler</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="/JS/dette/index.js"></script>
+</body>
+
+</html>
